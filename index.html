@@ -10,31 +10,45 @@
 	</head>
 	<body>
 		<div id="error" style="display: none">File not found</div>
-		<input type="text" id="file-input" value="file">
-		<input type="text" id="text" value="[INTENSITY INTENSIFIES]">
-		<button type="button" onclick="intensify()">Intensify</button>
+		<input type="text" id="text" value="[INTENSITY INTENSIFIES]"><br>
+		<input type="text" id="url-input">
+		<button type="button" onclick="select_url()">Intensify</button><br>
+		<input type="file" id="file-input" value="file" accept=".jpg, .jpeg, .png" onchange="select_file(this)">
 		<br>
 		<canvas id="bitmap"><canvas/>
 
 <script>
-function intensify() {
-	var file = document.getElementById("file-input").value;
-    var loading_image = loadImage(
-        file,
+function select_file(input) {
+	if (input.files && input.files[0]) {
+		intensify(input.files[0])
+	}
+}
+
+function select_url() {
+	console.log("select urlk");
+	var URL = document.getElementById("url-input").value;
+	intensify(URL);
+}
+
+function intensify(img) {
+	console.log("intensify");
+    loadImage(
+        img,
         function (img) {
-			document.getElementById("error").display = "block";
-			img.crossOrigin = "Anonymous";
-            create_gif(img);
+			if(img.type === "error") {
+				console.log("Unable to load file");
+				document.getElementById("error").display = "block";
+			} else {
+				create_gif(img);
+			}
         },
         {
 			crossOrigin: true
 		}
     );
-	if (!loading_image) {
-		alert();
-	}
 };
 function create_gif(source_file) {
+	console.log("create gif");
 	// Set up the canvas.
 	let canvas = document.getElementById("bitmap");
 	let ctx = canvas.getContext("2d");
@@ -63,9 +77,9 @@ function create_gif(source_file) {
 	let data_url = 'data:image/gif;base64,'+encode64(encoder.stream().getData());
 
 	let intense_gif = document.getElementById("intensity_image");
-	console.log(intense_gif);
 	if (intense_gif == undefined) {
 		intense_gif = new Image();
+		intense_gif.id = "intensity_image";
 		intense_gif.src = data_url;
 		document.body.appendChild(intense_gif);
 	}
@@ -74,9 +88,12 @@ function create_gif(source_file) {
 	}
 	intense_gif.width = canvas.width;
 	intense_gif.height = canvas.height;
+	canvas.width = 0;
+	canvas.height = 0;
 }
 
 function draw_gif_frame(ctx, img, text, frame) {
+	console.log("frame ", frame)
 	switch (frame){
 		case 0:
 			image_x = -15;
