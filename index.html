@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8"> 
+		<script type="text/javascript" src="./js/LZWEncoder.js"></script>
+		<script type="text/javascript" src="./js/NeuQuant.js"></script>
+		<script type="text/javascript" src="./js/GIFEncoder.js"></script>
+		<script type="text/javascript" src="./js/b64.js"></script>
+		<script type="text/javascript" src="./js/load-image.all.min.js"></script>
+	</head>
+	<body>
+		<div id="error" style="display: none">File not found</div>
+		<input type="text" id="file-input" value="file">
+		<input type="text" id="text" value="[INTENSITY INTENSIFIES]">
+		<button type="button" onclick="intensify()">Intensify</button>
+		<br>
+		<canvas id="bitmap"><canvas/>
+
+<script>
+function intensify() {
+	var file = document.getElementById("file-input").value;
+    var loading_image = loadImage(
+        file,
+        function (img) {
+			document.getElementById("error").display = "block";
+			img.crossOrigin = "Anonymous";
+            create_gif(img);
+        },
+        {
+			crossOrigin: true
+		}
+    );
+	if (!loading_image) {
+		alert();
+	}
+};
+function create_gif(source_file) {
+	// Set up the canvas.
+	let canvas = document.getElementById("bitmap");
+	let ctx = canvas.getContext("2d");
+	canvas.width = source_file.width - 15;
+	canvas.height = source_file.height - 15;
+
+	let encoder = new GIFEncoder();
+	encoder.setRepeat(0);
+	encoder.setDelay(40);
+	encoder.start();
+
+	ctx.font = '20pt Impact';
+	ctx.fillStyle = 'White';
+	ctx.lineWidth = 1;
+	ctx.strokeStyle = 'Black';
+	ctx.textAlign = 'center';
+	let text = document.getElementById("text").value;
+
+	for (let i=0; i < 5; i++){
+		draw_gif_frame(ctx, source_file, text, i);
+		console.log(encoder.addFrame(ctx), i);
+		ctx.clearRect(0, 0, canvas.width, canvas.height);
+	}
+
+	encoder.finish();
+	let data_url = 'data:image/gif;base64,'+encode64(encoder.stream().getData());
+
+	let intense_gif = document.getElementById("intensity_image");
+	console.log(intense_gif);
+	if (intense_gif == undefined) {
+		intense_gif = new Image();
+		intense_gif.src = data_url;
+		document.body.appendChild(intense_gif);
+	}
+	else {
+		intense_gif.src = data_url;
+	}
+	intense_gif.width = canvas.width;
+	intense_gif.height = canvas.height;
+}
+
+function draw_gif_frame(ctx, img, text, frame) {
+	switch (frame){
+		case 0:
+			image_x = -15;
+			image_y = -15;
+			break;
+		case 1:
+			image_x = -7;
+			image_y = 0;
+			break;
+		case 2:
+			image_x = 0;
+			image_y = -7;
+			break;
+		case 3:
+			image_x = 0;
+			image_y = -15;
+			break;
+		default:
+			image_x = -7;
+			image_y = 0;
+			break;
+	}
+	
+	ctx.drawImage(img, image_x, image_y);
+	text_x = (img.width - 15) / 2;
+	text_y = (img.height - 15) * 0.9
+	ctx.fillText(text, text_x, text_y);
+	ctx.strokeText(text, text_x, text_y);
+	ctx.fill();
+	ctx.stroke();
+}
+</script>
+	</body>
+</html>
