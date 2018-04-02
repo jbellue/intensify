@@ -113,6 +113,9 @@ function ready() {
 	font_slider.addEventListener('input', function() {
 		update_font_range(font_slider.value);
 	});
+	document.getElementById("error").addEventListener('click', function() {
+		document.getElementById("error").style.display = "none";
+	});
 }
 
 function draw_gif_frame(ctx, img, text, magnitude, frame) {

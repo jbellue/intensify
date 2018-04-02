@@ -7,7 +7,7 @@ For these times where a simple image isn't enough...
 
 #### TODO
 * [x] Make less ugly
-* [ ] Make the errors more obvious
+* [x] Make the errors more obvious
 * [x] Allow changing the font size
 * [ ] raise funds
 * [ ] sell user data
