@@ -19,9 +19,20 @@
 
 <script>
 function select_file(input) {
-	document.getElementById("error").style.display = "none";
-	if (input.files && input.files[0]) {
-		intensify(input.files[0])
+	var files = input.files;
+
+	if (FileReader && files && files.length) {
+		document.getElementById("error").style.display = "none";
+		var file_reader = new FileReader();
+		file_reader.onload = function () {
+			localStorage['image'] = file_reader.result;
+		}
+		file_reader.readAsDataURL(files[0]);
+
+		intensify(localStorage['image']);
+	}
+	else {
+		document.getElementById("error").style.display = "block";
 	}
 }
 
