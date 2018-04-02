@@ -12,10 +12,10 @@ form p input {
 	display: table-cell;
 }
 * {
-  margin: 0;
+	margin: 0;
 }
 html, body {
-  height: 100%;
+	height: 100%;
 }
 h1 {
 	padding: 50px;
@@ -28,11 +28,11 @@ h1 {
 	min-height: 100%;
 }
 #center:after {
-  content: "";
-  display: block;
+	content: "";
+	display: block;
 }
 #site_footer, #center:after {
-  height: 28px;
+	height: 28px;
 }
 footer {
 	padding: 3px 0px;

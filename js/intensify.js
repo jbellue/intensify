@@ -22,9 +22,9 @@ function select_url() {
 }
 
 function intensify(img) {
-    loadImage(
-        img,
-        function (img) {
+	loadImage(
+		img,
+		function (img) {
 			if(img.type === "error") {
 				console.log("Unable to load file");
 				document.getElementById("error").style.display = "block";
@@ -32,13 +32,13 @@ function intensify(img) {
 				document.getElementById("error").style.display = "none";
 				create_gif(img);
 			}
-        },
-        {
+		},
+		{
 			crossOrigin: true,
 			canvas: true,
 			maxWidth: 500
 		}
-    );
+	);
 }
 function create_gif(source_file) {
 	// Set up the canvas.
