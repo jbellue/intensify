@@ -18,7 +18,7 @@ function select_file(input) {
 }
 
 function select_url() {
-	intensify(document.getElementById("url-input").value);
+	intensify(document.getElementById("url-input").value || localStorage.image);
 }
 
 function intensify(img) {
