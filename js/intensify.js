@@ -49,12 +49,13 @@ function create_gif(source_file) {
 		document.body.appendChild(canvas);
 	}
 	var ctx = canvas.getContext("2d");
-	canvas.width = source_file.width - 10;
-	canvas.height = source_file.height - 10;
+	var magnitude = document.getElementById("range").value;
+	canvas.width = source_file.width - (magnitude * 2);
+	canvas.height = source_file.height - (magnitude * 2);
 
 	var encoder = new GIFEncoder();
 	encoder.setRepeat(0);
-	encoder.setDelay(25);
+	encoder.setDelay(20);
 	encoder.start();
 
 	ctx.font = "20pt Impact";
@@ -65,7 +66,7 @@ function create_gif(source_file) {
 	var text = document.getElementById("text").value;
 
 	for (var i=0; i < 5; i++){
-		draw_gif_frame(ctx, source_file, text, i);
+		draw_gif_frame(ctx, source_file, text, magnitude, i);
 		//console.log(encoder.addFrame(ctx), i);
 		encoder.addFrame(ctx);
 		ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -92,28 +93,40 @@ function create_gif(source_file) {
 	canvas.height = 0;
 }
 
-function draw_gif_frame(ctx, img, text, frame) {
-	var image_x = -5;
-	var image_y = -5;
+function update_range(value) {
+	document.getElementById("slider_value").innerHTML = value;
+}
+
+function ready() {
+	slider = document.getElementById("range");
+	document.getElementById("slider_value").innerHTML = slider.value;
+	slider.addEventListener('input', function() {
+		update_range(slider.value);
+	});
+}
+
+function draw_gif_frame(ctx, img, text, magnitude, frame) {
+	var image_x = -magnitude;
+	var image_y = -magnitude;
 	switch (frame){
 		case 0:
 			image_x = 0;
-			image_y = -10;
+			image_y = -2 * magnitude;
 			break;
 		case 1:
-			image_x = -10;
-			image_y = -10;
+			image_x = -2 * magnitude;
+			image_y = -2 * magnitude;
 			break;
 		case 2:
-			image_x = 0;
-			image_y = 0;
+			//image_x = 0;
+			//image_y = 0;
 			break;
 		case 3:
 			image_x = 0;
-			image_y = -10;
+			image_y = -magnitude;
 			break;
 		default:
-			image_x = -5;
+			image_x = -2 * magnitude;
 			image_y = 0;
 			break;
 	}
@@ -125,4 +138,11 @@ function draw_gif_frame(ctx, img, text, frame) {
 	ctx.strokeText(text, text_x, text_y);
 	ctx.fill();
 	ctx.stroke();
+}
+
+if (document.readyState !== 'loading') {
+	ready()
+} else {
+	// the document hasn't finished loading/parsing yet so let's add an event handler
+	document.addEventListener('DOMContentLoaded', ready)
 }
