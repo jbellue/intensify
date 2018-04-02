@@ -49,7 +49,7 @@ function create_gif(source_file) {
 		document.getElementById("center").appendChild(canvas);
 	}
 	var ctx = canvas.getContext("2d");
-	var magnitude = document.getElementById("range").value;
+	var magnitude = document.getElementById("magnitude_range").value;
 	canvas.width = source_file.width - (magnitude * 2);
 	canvas.height = source_file.height - (magnitude * 2);
 
@@ -58,7 +58,8 @@ function create_gif(source_file) {
 	encoder.setDelay(20);
 	encoder.start();
 
-	ctx.font = "20pt Impact";
+	var font = document.getElementById("font_range").value;
+	ctx.font = font + "pt Impact";
 	ctx.fillStyle = "White";
 	ctx.lineWidth = 1;
 	ctx.strokeStyle = "Black";
@@ -93,15 +94,24 @@ function create_gif(source_file) {
 	canvas.height = 0;
 }
 
-function update_range(value) {
-	document.getElementById("slider_value").innerHTML = value;
+function update_magnitude_range(value) {
+	document.getElementById("magnitude_slider_value").innerHTML = value;
+}
+
+function update_font_range(value) {
+	document.getElementById("font_slider_value").innerHTML = value;
 }
 
 function ready() {
-	slider = document.getElementById("range");
-	document.getElementById("slider_value").innerHTML = slider.value;
-	slider.addEventListener('input', function() {
-		update_range(slider.value);
+	magnitude_slider = document.getElementById("magnitude_range");
+	document.getElementById("magnitude_slider_value").innerHTML = magnitude_slider.value;
+	magnitude_slider.addEventListener('input', function() {
+		update_magnitude_range(magnitude_slider.value);
+	});
+	font_slider = document.getElementById("font_range");
+	document.getElementById("font_slider_value").innerHTML = font_slider.value;
+	font_slider.addEventListener('input', function() {
+		update_font_range(font_slider.value);
 	});
 }
 

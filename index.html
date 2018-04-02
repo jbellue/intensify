@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<meta http-equiv="Content-Type" content="text/html; charset="UTF-8">
+		<meta http-equiv="Content-Type" content="text/html" charset="UTF-8">
 		<title>INTENSIFY!</title>
 		<script type="text/javascript" src="./js/LZWEncoder.js"></script>
 		<script type="text/javascript" src="./js/NeuQuant.js"></script>
@@ -21,12 +21,16 @@
 				<input type="text" id="text" size=35 value="[INTENSITY INTENSIFIES]">
 				</p>
 				<p>
+				<label for="font-size">Font size: <span id="font_slider_value"></span></label>
+				<input type="range" min="10" max="50" value="20" class="slider" id="font_range">
+				</p>
+				<p>
 				<label for="url-input">From URL:</label>
 				<input type="text" id="url-input" size=35>
 				</p>
 				<p>
-				<label for="range">MAGNITUDE: <span id="slider_value"></span></label>
-				<input type="range" min="1" max="20" value="7" class="slider" id="range">
+				<label for="range">MAGNITUDE: <span id="magnitude_slider_value"></span></label>
+				<input type="range" min="1" max="20" value="7" class="slider" id="magnitude_range">
 				</p>
 			</form>
 			<p><input type="file" id="file-input" value="file" accept=".jpg, .jpeg, .png" onchange="select_file(this)"></p>
