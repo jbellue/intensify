@@ -6,7 +6,9 @@ For these times where a simple image isn't enough...
 * https://github.com/antimatter15/jsgif
 
 #### TODO
-* [ ] Make less ugly
+* [x] Make less ugly
+* [ ] Make the errors more obvious
+* [ ] Allow changing the font size
 * [ ] raise funds
 * [ ] sell user data
 * [ ] never touch a computer again
