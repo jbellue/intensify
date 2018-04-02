@@ -46,7 +46,7 @@ function create_gif(source_file) {
 	if (canvas === null) {
 		canvas = document.createElement("canvas");
 		canvas.id = "bitmap";
-		document.body.appendChild(canvas);
+		document.getElementById("center").appendChild(canvas);
 	}
 	var ctx = canvas.getContext("2d");
 	var magnitude = document.getElementById("range").value;
@@ -81,7 +81,7 @@ function create_gif(source_file) {
 		intense_gif = new Image();
 		intense_gif.id = "intensity_image";
 		intense_gif.src = data_url;
-		document.body.appendChild(intense_gif);
+		document.getElementById("center").appendChild(intense_gif);
 	}
 	else {
 		intense_gif.src = data_url;

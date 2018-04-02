@@ -1,0 +1,42 @@
+form {
+	display: table;
+}
+form p {
+	display: table-row;
+}
+form p label {
+	display: table-cell;
+	min-width: 130px;
+}
+form p input {
+	display: table-cell;
+}
+* {
+  margin: 0;
+}
+html, body {
+  height: 100%;
+}
+h1 {
+	padding: 50px;
+}
+#center {
+	width:400px;
+	margin-left: auto;
+	margin-right: auto;
+	margin-bottom: -28px;
+	min-height: 100%;
+}
+#center:after {
+  content: "";
+  display: block;
+}
+#site_footer, #center:after {
+  height: 28px;
+}
+footer {
+	padding: 3px 0px;
+	font-size: 0.8em;
+	text-align: center; 
+	background: orange;
+}

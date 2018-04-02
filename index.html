@@ -1,22 +1,39 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<meta charset="UTF-8"> 
+		<meta http-equiv="Content-Type" content="text/html; charset="UTF-8">
+		<title>INTENSIFY!</title>
 		<script type="text/javascript" src="./js/LZWEncoder.js"></script>
 		<script type="text/javascript" src="./js/NeuQuant.js"></script>
 		<script type="text/javascript" src="./js/GIFEncoder.js"></script>
 		<script type="text/javascript" src="./js/b64.js"></script>
 		<script type="text/javascript" src="./js/load-image.all.min.js"></script>
 		<script type="text/javascript" src="./js/intensify.js"></script>
+		<link rel="stylesheet" href="./styles.css">
 	</head>
 	<body>
-		<div id="error" style="display: none">File not found</div>
-		<input type="text" id="text" value="[INTENSITY INTENSIFIES]"><br>
-		<input type="text" id="url-input"><br>
-		<input type="range" min="1" max="20" value="7" class="slider" id="range" oninput="update_range(this)">
-		MAGNITUDE: <span id="slider_value"></span><br>
-		<button type="button" onclick="select_url()">Intensify!</button>
-		<input type="file" id="file-input" value="file" accept=".jpg, .jpeg, .png" onchange="select_file(this)">
-		<br>
+	<div id="center">
+		<h1>INTENSIFY!</h1>
+			<div id="error" style="display: none">File not found</div>
+			<form>
+				<p>
+				<label for="text">Text:</label>
+				<input type="text" id="text" size=35 value="[INTENSITY INTENSIFIES]">
+				</p>
+				<p>
+				<label for="url-input">From URL:</label>
+				<input type="text" id="url-input" size=35>
+				</p>
+				<p>
+				<label for="range">MAGNITUDE: <span id="slider_value"></span></label>
+				<input type="range" min="1" max="20" value="7" class="slider" id="range">
+				</p>
+			</form>
+			<p><input type="file" id="file-input" value="file" accept=".jpg, .jpeg, .png" onchange="select_file(this)"></p>
+			<p><button type="button" onclick="select_url()">INTENSIFY!</button></p>
+		</div>
+		 <footer id="site_footer">
+			Julien Bellue &#10070; <a href="https://www.github.com/jbellue">www.github.com/jbellue</a>
+		</footer> 
 	</body>
 </html>
