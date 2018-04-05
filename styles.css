@@ -1,8 +1,7 @@
 form {
 	display: grid;
 	grid-gap: 5px;
-	
-  grid-template-columns: 1fr 2fr 30px;
+	grid-template-columns: 1fr 2fr 30px;
 }
 label {
     text-align: right;
@@ -25,6 +24,7 @@ input {
 #intensify_button {
     grid-column: 1 / 4;
 	grid-row: 6;
+	height: 35px;
 }
 * {
 	margin: 0;
