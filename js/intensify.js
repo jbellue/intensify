@@ -1,35 +1,92 @@
+if (document.readyState !== 'loading') {
+	ready()
+} else {
+	// the document hasn't finished loading/parsing yet so let's add an event handler
+	document.addEventListener('DOMContentLoaded', ready)
+}
+
+function ready() {
+	if (localStorage.image) {
+		show_ready();
+	}
+	magnitude_slider = document.getElementById("magnitude_range");
+	document.getElementById("magnitude_slider_value").innerHTML = magnitude_slider.value;
+	magnitude_slider.addEventListener('input', function() {
+		update_magnitude_range(magnitude_slider.value);
+	});
+	font_slider = document.getElementById("font_range");
+	document.getElementById("font_slider_value").innerHTML = font_slider.value;
+	font_slider.addEventListener('input', function() {
+		update_font_range(font_slider.value);
+	});
+	document.getElementById("error").addEventListener('click', function() {
+		hide_error();
+	});
+}
 
 function select_file(input) {
 	var files = input.files;
+	show_loading();
 
 	if (FileReader && files && files.length) {
-		document.getElementById("error").style.display = "none";
 		var file_reader = new FileReader();
 		file_reader.onload = function () {
 			localStorage.image = file_reader.result;
+			show_ready();
 		};
 		file_reader.readAsDataURL(files[0]);
-
-		intensify(localStorage.image);
 	}
 	else {
-		document.getElementById("error").style.display = "block";
+		show_error();
 	}
 }
 
-function select_url() {
-	intensify(document.getElementById("url-input").value || localStorage.image);
+function save_to_local_storage() {
+	var url = document.getElementById("url-input").value;
+	if (url == null || url == "") {
+		return;
+	}
+	var xhr = new XMLHttpRequest();
+	show_loading();
+	xhr.open("GET", url, true);
+	xhr.responseType = "blob";
+
+	xhr.addEventListener("load", function () {
+		if(xhr.readyState==4 && xhr.status === 200) {
+			var fileReader = new FileReader();
+			fileReader.onload = function (evt) {
+				localStorage.image = evt.target.result;
+				show_ready();
+			};
+			fileReader.readAsDataURL(xhr.response);
+		}
+		else {
+			console.log("Unable to load file");
+			show_error();
+		}
+	});
+	xhr.addEventListener("error", function () {
+		console.log("Unable to load file");
+		show_error();
+	});
+	xhr.send();
 }
 
-function intensify(img) {
+function intensify() {
+	show_intensifying();
+	document.getElementById("url-input").value = "";
+	document.getElementById("file-input").value = null;
+	load_local_storage(localStorage.image);
+}
+
+function load_local_storage(img) {
 	loadImage(
 		img,
 		function (img) {
 			if(img.type === "error") {
 				console.log("Unable to load file");
-				document.getElementById("error").style.display = "block";
+				show_error();
 			} else {
-				document.getElementById("error").style.display = "none";
 				create_gif(img);
 			}
 		},
@@ -76,7 +133,6 @@ function create_gif(source_file) {
 	encoder.finish();
 	var data_url = "data:image/gif;base64,"+encode64(encoder.stream().getData());
 
-
 	var intense_gif = document.getElementById("intensity_image");
 	if (intense_gif == undefined) {
 		intense_gif = new Image();
@@ -88,6 +144,7 @@ function create_gif(source_file) {
 		intense_gif.src = data_url;
 	}
 
+	hide_all();
 	intense_gif.width = canvas.width;
 	intense_gif.height = canvas.height;
 	canvas.width = 0;
@@ -102,21 +159,6 @@ function update_font_range(value) {
 	document.getElementById("font_slider_value").innerHTML = value;
 }
 
-function ready() {
-	magnitude_slider = document.getElementById("magnitude_range");
-	document.getElementById("magnitude_slider_value").innerHTML = magnitude_slider.value;
-	magnitude_slider.addEventListener('input', function() {
-		update_magnitude_range(magnitude_slider.value);
-	});
-	font_slider = document.getElementById("font_range");
-	document.getElementById("font_slider_value").innerHTML = font_slider.value;
-	font_slider.addEventListener('input', function() {
-		update_font_range(font_slider.value);
-	});
-	document.getElementById("error").addEventListener('click', function() {
-		document.getElementById("error").style.display = "none";
-	});
-}
 
 function draw_gif_frame(ctx, img, text, magnitude, frame) {
 	var image_x = -magnitude;
@@ -153,9 +195,45 @@ function draw_gif_frame(ctx, img, text, magnitude, frame) {
 	ctx.stroke();
 }
 
-if (document.readyState !== 'loading') {
-	ready()
-} else {
-	// the document hasn't finished loading/parsing yet so let's add an event handler
-	document.addEventListener('DOMContentLoaded', ready)
+function hide_error() {
+	document.getElementById("error").style.display = "none";
+}
+function hide_loading() {
+	document.getElementById("loading").style.display = "none";
+}
+function hide_ready() {
+	document.getElementById("ready").style.display = "none";
+}
+function hide_intensifying() {
+	document.getElementById("intensifying").style.display = "none";
+}
+function show_error() {
+	document.getElementById("error").style.display = "block";
+	hide_loading();
+	hide_ready();
+	hide_intensifying();
+}
+function show_loading() {
+	hide_error();
+	document.getElementById("loading").style.display = "block";
+	hide_ready();
+	hide_intensifying();
+}
+function show_ready() {
+	hide_error();
+	hide_loading();
+	document.getElementById("ready").style.display = "block";
+	hide_intensifying();
+}
+function show_intensifying() {
+	hide_error();
+	hide_loading();
+	hide_ready();
+	document.getElementById("intensifying").style.display = "block";
+}
+function hide_all() {
+	hide_error();
+	hide_loading();
+	hide_ready();
+	hide_intensifying();
 }

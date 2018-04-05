@@ -1,15 +1,30 @@
 form {
-	display: table;
+	display: grid;
+	grid-gap: 5px;
+	
+  grid-template-columns: 1fr 2fr 30px;
 }
-form p {
-	display: table-row;
+label {
+    text-align: right;
+    grid-column: 1;
 }
-form p label {
-	display: table-cell;
-	min-width: 130px;
+
+input {
+    grid-column: 2 / 4;
 }
-form p input {
-	display: table-cell;
+
+#url-input {
+    grid-column: 2;
+	grid-row: 1;
+}
+#get_button {
+    grid-column: 3;
+	grid-row: 1;
+	padding: 0px;
+}
+#intensify_button {
+    grid-column: 1 / 4;
+	grid-row: 6;
 }
 * {
 	margin: 0;
@@ -19,13 +34,28 @@ html, body {
 }
 h1 {
 	padding: 50px;
+	text-align: center;
+}
+.msg_box{
+	text-align: center;
+	padding: 5px 0px;
+	margin: 5px 0px;
 }
 #error{
 	color: #D8000C;
 	background-color: #FFBABA;
-	text-align: center;
-	padding: 5px 0px;
-	margin: 5px 0px;
+}
+#loading{
+	color: #00529B;
+    background-color: #BDE5F8;
+}
+#ready{
+	color: #4F8A10;
+    background-color: #DFF2BF;
+}
+#intensifying{
+	color: #00529B;
+    background-color: #BDE5F8;
 }
 #center {
 	width:400px;
