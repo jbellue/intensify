@@ -120,9 +120,10 @@ function create_gif(source_file) {
 	ctx.strokeStyle = "Black";
 	ctx.textAlign = "center";
 	var text = document.getElementById("text").value;
+	var intensify_text = document.getElementById("text-menu").value;
 
 	for (var i = 0; i < 5; i++) {
-		draw_gif_frame(ctx, source_file, text, magnitude, i);
+		draw_gif_frame(ctx, source_file, text, intensify_text, magnitude, i);
 		//console.log(encoder.addFrame(ctx), i);
 		encoder.addFrame(ctx);
 		ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -157,7 +158,7 @@ function update_font_range(value) {
 }
 
 
-function draw_gif_frame(ctx, img, text, magnitude, frame) {
+function draw_gif_frame(ctx, img, text, intensify_text, magnitude, frame) {
 	var image_x = -magnitude;
 	var image_y = -magnitude;
 	switch (frame) {
@@ -186,6 +187,15 @@ function draw_gif_frame(ctx, img, text, magnitude, frame) {
 	ctx.drawImage(img, image_x, image_y);
 	var text_x = (img.width - 15) / 2;
 	var text_y = (img.height - 15) * 0.9;
+	switch (intensify_text) {
+		case "along":
+			text_x += image_x;
+			text_y += image_y;
+			break;
+		case "shake":
+			break;
+		default:
+	}
 	ctx.fillText(text, text_x, text_y);
 	ctx.strokeText(text, text_x, text_y);
 	ctx.fill();

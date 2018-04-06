@@ -27,6 +27,12 @@
 			<input type="text" id="text" value="[INTENSITY INTENSIFIES]">
 			<label for="font-size">font size (<span id="font_slider_value"></span>)</label>
 			<input type="range" min="10" max="50" value="20" class="slider" id="font_range">
+			<label for="text-menu">intensify text</label>
+			<select id="text-menu">
+				<option value="none">none</option>
+				<option value="along">with the image</option>
+				<option value="shake">shake</option>
+			  </select> 
 			<label for="range">INTENSITY (<span id="magnitude_slider_value"></span>)</label>
 			<input type="range" min="1" max="20" value="7" class="slider" id="magnitude_range">
 			<button id="intensify_button" type="button" onclick="intensify()">INTENSIFY!</button>
