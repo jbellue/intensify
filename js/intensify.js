@@ -11,15 +11,15 @@ function ready() {
 	}
 	magnitude_slider = document.getElementById("magnitude_range");
 	document.getElementById("magnitude_slider_value").innerHTML = magnitude_slider.value;
-	magnitude_slider.addEventListener('input', function() {
+	magnitude_slider.addEventListener('input', function () {
 		update_magnitude_range(magnitude_slider.value);
 	});
 	font_slider = document.getElementById("font_range");
 	document.getElementById("font_slider_value").innerHTML = font_slider.value;
-	font_slider.addEventListener('input', function() {
+	font_slider.addEventListener('input', function () {
 		update_font_range(font_slider.value);
 	});
-	document.getElementById("error").addEventListener('click', function() {
+	document.getElementById("error").addEventListener('click', function () {
 		hide_error();
 	});
 }
@@ -35,8 +35,7 @@ function select_file(input) {
 			show_ready();
 		};
 		file_reader.readAsDataURL(files[0]);
-	}
-	else {
+	} else {
 		show_error();
 	}
 }
@@ -52,15 +51,14 @@ function save_to_local_storage() {
 	xhr.responseType = "blob";
 
 	xhr.addEventListener("load", function () {
-		if(xhr.readyState==4 && xhr.status === 200) {
+		if (xhr.readyState == 4 && xhr.status === 200) {
 			var fileReader = new FileReader();
 			fileReader.onload = function (evt) {
 				localStorage.image = evt.target.result;
 				show_ready();
 			};
 			fileReader.readAsDataURL(xhr.response);
-		}
-		else {
+		} else {
 			console.log("Unable to load file");
 			show_error();
 		}
@@ -83,20 +81,20 @@ function load_local_storage(img) {
 	loadImage(
 		img,
 		function (img) {
-			if(img.type === "error") {
+			if (img.type === "error") {
 				console.log("Unable to load file");
 				show_error();
 			} else {
 				create_gif(img);
 			}
-		},
-		{
+		}, {
 			crossOrigin: true,
 			canvas: true,
 			maxWidth: 500
 		}
 	);
 }
+
 function create_gif(source_file) {
 	// Set up the canvas.
 	var canvas = document.getElementById("bitmap");
@@ -123,7 +121,7 @@ function create_gif(source_file) {
 	ctx.textAlign = "center";
 	var text = document.getElementById("text").value;
 
-	for (var i=0; i < 5; i++){
+	for (var i = 0; i < 5; i++) {
 		draw_gif_frame(ctx, source_file, text, magnitude, i);
 		//console.log(encoder.addFrame(ctx), i);
 		encoder.addFrame(ctx);
@@ -131,7 +129,7 @@ function create_gif(source_file) {
 	}
 
 	encoder.finish();
-	var data_url = "data:image/gif;base64,"+encode64(encoder.stream().getData());
+	var data_url = "data:image/gif;base64," + encode64(encoder.stream().getData());
 
 	var intense_gif = document.getElementById("intensity_image");
 	if (intense_gif == undefined) {
@@ -139,8 +137,7 @@ function create_gif(source_file) {
 		intense_gif.id = "intensity_image";
 		intense_gif.src = data_url;
 		document.getElementById("center").appendChild(intense_gif);
-	}
-	else {
+	} else {
 		intense_gif.src = data_url;
 	}
 
@@ -163,7 +160,7 @@ function update_font_range(value) {
 function draw_gif_frame(ctx, img, text, magnitude, frame) {
 	var image_x = -magnitude;
 	var image_y = -magnitude;
-	switch (frame){
+	switch (frame) {
 		case 0:
 			image_x = 0;
 			image_y = -2 * magnitude;
@@ -185,7 +182,7 @@ function draw_gif_frame(ctx, img, text, magnitude, frame) {
 			image_y = 0;
 			break;
 	}
-	
+
 	ctx.drawImage(img, image_x, image_y);
 	var text_x = (img.width - 15) / 2;
 	var text_y = (img.height - 15) * 0.9;
@@ -198,39 +195,47 @@ function draw_gif_frame(ctx, img, text, magnitude, frame) {
 function hide_error() {
 	document.getElementById("error").style.display = "none";
 }
+
 function hide_loading() {
 	document.getElementById("loading").style.display = "none";
 }
+
 function hide_ready() {
 	document.getElementById("ready").style.display = "none";
 }
+
 function hide_intensifying() {
 	document.getElementById("intensifying").style.display = "none";
 }
+
 function show_error() {
 	document.getElementById("error").style.display = "block";
 	hide_loading();
 	hide_ready();
 	hide_intensifying();
 }
+
 function show_loading() {
 	hide_error();
 	document.getElementById("loading").style.display = "block";
 	hide_ready();
 	hide_intensifying();
 }
+
 function show_ready() {
 	hide_error();
 	hide_loading();
 	document.getElementById("ready").style.display = "block";
 	hide_intensifying();
 }
+
 function show_intensifying() {
 	hide_error();
 	hide_loading();
 	hide_ready();
 	document.getElementById("intensifying").style.display = "block";
 }
+
 function hide_all() {
 	hide_error();
 	hide_loading();
