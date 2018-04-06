@@ -25,20 +25,21 @@
 			<input type="file" id="file-input" value="file" accept=".jpg, .jpeg, .png" onchange="select_file(this)">
 			<label for="text">text</label>
 			<input type="text" id="text" value="[INTENSITY INTENSIFIES]">
-			<label for="font-size">font size (<span id="font_slider_value"></span>)</label>
-			<input type="range" min="10" max="50" value="20" class="slider" id="font_range">
+			<label for="font-size">font size (<span id="font_slider_value"></span>px)</label>
+			<input type="range" min="10" max="70" value="30" class="slider" id="font_range">
 			<label for="text-menu">intensify text</label>
 			<select id="text-menu">
-				<option value="none">none</option>
-				<option value="along">with the image</option>
-				<option value="shake">shake</option>
-				<option value="pulse">pulse</option>
+				<option value="none" title="the text won't move">none</option>
+				<option value="along" title="the text will shake along with the image">with the image</option>
+				<option value="shake" title="the text will shake independently from the image">shake</option>
+				<option value="pulse" title="the text will only pulse on the image">pulse</option>
+				<option value="pulse_move" title="the text will pulse and move with the image">pulse and move</option>
 			  </select> 
 			<label for="range">INTENSITY (<span id="magnitude_slider_value"></span>)</label>
 			<input type="range" min="1" max="20" value="7" class="slider" id="magnitude_range">
 			<button id="intensify_button" type="button" onclick="intensify()">INTENSIFY!</button>
 		</form>
-		<div class="msg_box" id="error" style="display: none">&#x26a0; Unable to load file</div>
+		<div class="msg_box" id="error" style="display: none">&#x1F622; Unable to load file</div>
 		<div class="msg_box" id="loading" style="display: none">&#x231b; Loading...</div>
 		<div class="msg_box" id="ready" style="display: none">&#x1F44D; Image loaded, ready for intensification!</div>
 		<div class="msg_box" id="intensifying" style="display: none">&#x1F477; Intensifying...</div>

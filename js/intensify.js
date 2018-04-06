@@ -114,7 +114,7 @@ function create_gif(source_file) {
 	encoder.start();
 
 	var font = document.getElementById("font_range").value;
-	ctx.font = font + "pt Impact";
+	ctx.font = font + "px Impact";
 	ctx.fillStyle = "White";
 	ctx.lineWidth = 1;
 	ctx.strokeStyle = "Black";
@@ -177,10 +177,14 @@ function draw_gif_frame(ctx, img, gif_data, magnitude, frame) {
 			break;
 		case "shake":
 			text_x += -magnitude * gif_data.text_x[frame];
-			text_y += -magnitude * gif_data.text_y[frame];;
+			text_y += -magnitude * gif_data.text_y[frame];
 			break;
+		case "pulse_move":
+			text_x += image_x;
+			text_y += image_y;
+			// intentional fallthrough
 		case "pulse":
-			ctx.font = ctx.font.replace(/\d+pt/, (parseInt(ctx.font.match(/\d+/)) + 4) + "pt");
+			ctx.font = ctx.font.replace(/\d+px/, parseInt(ctx.font.match(/\d+/)) + 4 + "px");
 			break;
 		default:
 	}
