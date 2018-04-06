@@ -163,7 +163,6 @@ function update_font_range(value) {
 	document.getElementById("font_slider_value").innerHTML = value;
 }
 
-
 function draw_gif_frame(ctx, img, gif_data, magnitude, frame) {
 	var image_x = -magnitude * gif_data.image_x[frame];
 	var image_y = -magnitude * gif_data.image_y[frame];
@@ -179,6 +178,9 @@ function draw_gif_frame(ctx, img, gif_data, magnitude, frame) {
 		case "shake":
 			text_x += -magnitude * gif_data.text_x[frame];
 			text_y += -magnitude * gif_data.text_y[frame];;
+			break;
+		case "pulse":
+			ctx.font = ctx.font.replace(/\d+pt/, (parseInt(ctx.font.match(/\d+/)) + 4) + "pt");
 			break;
 		default:
 	}
