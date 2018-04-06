@@ -1,40 +1,47 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<meta http-equiv="Content-Type" content="text/html" charset="UTF-8">
-		<title>INTENSIFY!</title>
-		<script type="text/javascript" src="./js/LZWEncoder.js"></script>
-		<script type="text/javascript" src="./js/NeuQuant.js"></script>
-		<script type="text/javascript" src="./js/GIFEncoder.js"></script>
-		<script type="text/javascript" src="./js/b64.js"></script>
-		<script type="text/javascript" src="./js/load-image.js"></script>
-		<script type="text/javascript" src="./js/load-image-scale.js"></script>
-		<script type="text/javascript" src="./js/intensify.js"></script>
-		<link rel="stylesheet" href="./styles.css">
-	</head>
-	<body>
+
+<head>
+	<meta http-equiv="Content-Type" content="text/html" charset="UTF-8">
+	<title>INTENSIFY!</title>
+	<script type="text/javascript" src="./js/LZWEncoder.js"></script>
+	<script type="text/javascript" src="./js/NeuQuant.js"></script>
+	<script type="text/javascript" src="./js/GIFEncoder.js"></script>
+	<script type="text/javascript" src="./js/b64.js"></script>
+	<script type="text/javascript" src="./js/load-image.js"></script>
+	<script type="text/javascript" src="./js/load-image-scale.js"></script>
+	<script type="text/javascript" src="./js/intensify.js"></script>
+	<link rel="stylesheet" href="./styles.css">
+</head>
+
+<body>
 	<div id="center">
 		<h1>INTENSIFY!</h1>
-			<form>
-				<label for="url-input">from URL</label>
-				<input type="text" id="url-input"><button id="get_button" type="button" onclick="save_to_local_storage()">get</button>
-				<label for="file-input">or from file</label>
-				<input type="file" id="file-input" value="file" accept=".jpg, .jpeg, .png" onchange="select_file(this)">
-				<label for="text">text</label>
-				<input type="text" id="text" value="[INTENSITY INTENSIFIES]">
-				<label for="font-size">font size (<span id="font_slider_value"></span>)</label>
-				<input type="range" min="10" max="50" value="20" class="slider" id="font_range">
-				<label for="range">MAGNITUDE (<span id="magnitude_slider_value"></span>)</label>
-				<input type="range" min="1" max="20" value="7" class="slider" id="magnitude_range">
-				<button id="intensify_button" type="button" onclick="intensify()">INTENSIFY!</button>
-			</form>
-			<div class="msg_box" id="error" style="display: none">&#x26a0; Unable to load file</div>
-			<div class="msg_box" id="loading" style="display: none">&#x231b; Loading...</div>
-			<div class="msg_box" id="ready" style="display: none">Ready for intensification!</div>
-			<div class="msg_box" id="intensifying" style="display: none">Intensifying...</div>
-		</div>
-		 <footer id="site_footer">
-			Julien Bellue &#10070; <a href="https://www.github.com/jbellue">www.github.com/jbellue</a>
-		</footer> 
-	</body>
+		<form>
+			<label for="url-input">from URL</label>
+			<input type="text" id="url-input">
+			<button id="get_button" type="button" onclick="save_to_local_storage()">get</button>
+			<label for="file-input">or from file</label>
+			<input type="file" id="file-input" value="file" accept=".jpg, .jpeg, .png" onchange="select_file(this)">
+			<label for="text">text</label>
+			<input type="text" id="text" value="[INTENSITY INTENSIFIES]">
+			<label for="font-size">font size (
+				<span id="font_slider_value"></span>)</label>
+			<input type="range" min="10" max="50" value="20" class="slider" id="font_range">
+			<label for="range">MAGNITUDE (
+				<span id="magnitude_slider_value"></span>)</label>
+			<input type="range" min="1" max="20" value="7" class="slider" id="magnitude_range">
+			<button id="intensify_button" type="button" onclick="intensify()">INTENSIFY!</button>
+		</form>
+		<div class="msg_box" id="error" style="display: none">&#x26a0; Unable to load file</div>
+		<div class="msg_box" id="loading" style="display: none">&#x231b; Loading...</div>
+		<div class="msg_box" id="ready" style="display: none">Ready for intensification!</div>
+		<div class="msg_box" id="intensifying" style="display: none">Intensifying...</div>
+	</div>
+	<footer id="site_footer">
+		Julien Bellue &#10070;
+		<a href="https://www.github.com/jbellue">www.github.com/jbellue</a>
+	</footer>
+</body>
+
 </html>
