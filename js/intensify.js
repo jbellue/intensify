@@ -169,8 +169,8 @@ function draw_gif_frame(ctx, img, gif_data, magnitude, frame) {
 	var image_y = -magnitude * gif_data.image_y[frame];
 
 	ctx.drawImage(img, image_x, image_y);
-	var text_x = (img.width - 15) / 2;
-	var text_y = (img.height - 15) * 0.98;
+	var text_x = ctx.canvas.clientWidth / 2;
+	var text_y = ctx.canvas.clientHeight * 0.98;
 	switch (gif_data.intensify_text) {
 		case "along":
 			text_x += image_x;
