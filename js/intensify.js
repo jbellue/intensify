@@ -119,11 +119,17 @@ function create_gif(source_file) {
 	ctx.lineWidth = 1;
 	ctx.strokeStyle = "Black";
 	ctx.textAlign = "center";
-	var text = document.getElementById("text").value;
-	var intensify_text = document.getElementById("text-menu").value;
+	var gif_data = {
+		text: document.getElementById("text").value,
+		intensify_text: document.getElementById("text-menu").value,
+		image_x: [0, 2, 1, 0, 2],
+		image_y: [2, 2, 0, 1, 1],
+		text_x:  [1, 0, 2, 0, 1],
+		text_y:  [1, 2, 0, 2, 2]
+	}
 
 	for (var i = 0; i < 5; i++) {
-		draw_gif_frame(ctx, source_file, text, intensify_text, magnitude, i);
+		draw_gif_frame(ctx, source_file, gif_data, magnitude, i);
 		//console.log(encoder.addFrame(ctx), i);
 		encoder.addFrame(ctx);
 		ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -158,46 +164,26 @@ function update_font_range(value) {
 }
 
 
-function draw_gif_frame(ctx, img, text, intensify_text, magnitude, frame) {
-	var image_x = -magnitude;
-	var image_y = -magnitude;
-	switch (frame) {
-		case 0:
-			image_x = 0;
-			image_y = -2 * magnitude;
-			break;
-		case 1:
-			image_x = -2 * magnitude;
-			image_y = -2 * magnitude;
-			break;
-		case 2:
-			//image_x = 0;
-			//image_y = 0;
-			break;
-		case 3:
-			image_x = 0;
-			image_y = -magnitude;
-			break;
-		default:
-			image_x = -2 * magnitude;
-			image_y = 0;
-			break;
-	}
+function draw_gif_frame(ctx, img, gif_data, magnitude, frame) {
+	var image_x = -magnitude * gif_data.image_x[frame];
+	var image_y = -magnitude * gif_data.image_y[frame];
 
 	ctx.drawImage(img, image_x, image_y);
 	var text_x = (img.width - 15) / 2;
-	var text_y = (img.height - 15) * 0.9;
-	switch (intensify_text) {
+	var text_y = (img.height - 15) * 0.98;
+	switch (gif_data.intensify_text) {
 		case "along":
 			text_x += image_x;
 			text_y += image_y;
 			break;
 		case "shake":
+			text_x += -magnitude * gif_data.text_x[frame];
+			text_y += -magnitude * gif_data.text_y[frame];;
 			break;
 		default:
 	}
-	ctx.fillText(text, text_x, text_y);
-	ctx.strokeText(text, text_x, text_y);
+	ctx.fillText(gif_data.text, text_x, text_y);
+	ctx.strokeText(gif_data.text, text_x, text_y);
 	ctx.fill();
 	ctx.stroke();
 }
