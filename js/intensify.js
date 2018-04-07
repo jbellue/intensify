@@ -5,38 +5,40 @@ if (document.readyState !== 'loading') {
 	document.addEventListener('DOMContentLoaded', ready)
 }
 
+var div_list = [
+	"error",
+	"loading",
+	"ready",
+	"intensifying"
+]
+
 function ready() {
 	if (localStorage.image) {
-		show_ready();
+		show_only("ready");
 	}
-	magnitude_slider = document.getElementById("magnitude_range");
-	document.getElementById("magnitude_slider_value").innerHTML = magnitude_slider.value;
-	magnitude_slider.addEventListener('input', function () {
-		update_magnitude_range(magnitude_slider.value);
-	});
-	font_slider = document.getElementById("font_range");
-	document.getElementById("font_slider_value").innerHTML = font_slider.value;
-	font_slider.addEventListener('input', function () {
-		update_font_range(font_slider.value);
-	});
-	document.getElementById("error").addEventListener('click', function () {
-		hide_error();
-	});
+	link_range_to_value(document.getElementById("font_range"),      document.getElementById("font_slider_value"));
+	link_range_to_value(document.getElementById("magnitude_range"), document.getElementById("magnitude_slider_value"));
+	document.getElementById("error").addEventListener('click', () => hide_div("error"));
+}
+
+function link_range_to_value(range, display) {
+	display.innerHTML = range.value;
+	range.addEventListener('input', () => display.innerHTML = range.value);
 }
 
 function select_file(input) {
 	var files = input.files;
-	show_loading();
+	show_only("loading");
 
 	if (FileReader && files && files.length) {
 		var file_reader = new FileReader();
-		file_reader.onload = function () {
+		file_reader.onload = () => {
 			localStorage.image = file_reader.result;
-			show_ready();
+			show_only("ready");
 		};
 		file_reader.readAsDataURL(files[0]);
 	} else {
-		show_error();
+		show_only("error");
 	}
 }
 
@@ -46,7 +48,7 @@ function save_to_local_storage() {
 		return;
 	}
 	var xhr = new XMLHttpRequest();
-	show_loading();
+	show_only("loading");
 	xhr.open("GET", url, true);
 	xhr.responseType = "blob";
 
@@ -55,23 +57,23 @@ function save_to_local_storage() {
 			var fileReader = new FileReader();
 			fileReader.onload = function (evt) {
 				localStorage.image = evt.target.result;
-				show_ready();
+				show_only("ready");
 			};
 			fileReader.readAsDataURL(xhr.response);
 		} else {
-			console.log("Unable to load file");
-			show_error();
+			console.error("Unable to load file");
+			show_only("error");
 		}
 	});
 	xhr.addEventListener("error", function () {
-		console.log("Unable to load file");
-		show_error();
+		console.error("Unable to load file");
+		show_only("error");
 	});
 	xhr.send();
 }
 
 function intensify() {
-	show_intensifying();
+	show_only("intensifying");
 	document.getElementById("url-input").value = "";
 	document.getElementById("file-input").value = null;
 	load_local_storage(localStorage.image);
@@ -82,8 +84,8 @@ function load_local_storage(img) {
 		img,
 		function (img) {
 			if (img.type === "error") {
-				console.log("Unable to load file");
-				show_error();
+				console.error("Unable to load file");
+				show_only("error");
 			} else {
 				create_gif(img);
 			}
@@ -120,6 +122,8 @@ function create_gif(source_file) {
 	ctx.strokeStyle = "Black";
 	ctx.textAlign = "center";
 	var gif_data = {
+		source_file: source_file,
+		magnitude: magnitude,
 		text: document.getElementById("text").value,
 		intensify_text: document.getElementById("text-menu").value,
 		image_x: [0, 2, 1, 0, 2],
@@ -129,8 +133,7 @@ function create_gif(source_file) {
 	}
 
 	for (var i = 0; i < 5; i++) {
-		draw_gif_frame(ctx, source_file, gif_data, magnitude, i);
-		//console.log(encoder.addFrame(ctx), i);
+		draw_gif_frame(ctx, gif_data, i);
 		encoder.addFrame(ctx);
 		ctx.clearRect(0, 0, canvas.width, canvas.height);
 	}
@@ -155,19 +158,12 @@ function create_gif(source_file) {
 	canvas.height = 0;
 }
 
-function update_magnitude_range(value) {
-	document.getElementById("magnitude_slider_value").innerHTML = value;
-}
+function draw_gif_frame(ctx, gif_data, frame) {
+	var magnitude = -gif_data.magnitude;
+	var image_x = magnitude * gif_data.image_x[frame];
+	var image_y = magnitude * gif_data.image_y[frame];
+	ctx.drawImage(gif_data.source_file, image_x, image_y);
 
-function update_font_range(value) {
-	document.getElementById("font_slider_value").innerHTML = value;
-}
-
-function draw_gif_frame(ctx, img, gif_data, magnitude, frame) {
-	var image_x = -magnitude * gif_data.image_x[frame];
-	var image_y = -magnitude * gif_data.image_y[frame];
-
-	ctx.drawImage(img, image_x, image_y);
 	var text_x = ctx.canvas.clientWidth / 2;
 	var text_y = ctx.canvas.clientHeight * 0.98;
 	switch (gif_data.intensify_text) {
@@ -176,8 +172,8 @@ function draw_gif_frame(ctx, img, gif_data, magnitude, frame) {
 			text_y += image_y;
 			break;
 		case "shake":
-			text_x += -magnitude * gif_data.text_x[frame];
-			text_y += -magnitude * gif_data.text_y[frame];
+			text_x += magnitude * gif_data.text_x[frame];
+			text_y += magnitude * gif_data.text_y[frame];
 			break;
 		case "pulse_move":
 			text_x += image_x;
@@ -194,53 +190,15 @@ function draw_gif_frame(ctx, img, gif_data, magnitude, frame) {
 	ctx.stroke();
 }
 
-function hide_error() {
-	document.getElementById("error").style.display = "none";
+function show_only(name) {
+	div_list.forEach((div) => {
+		if (div == name) {
+			document.getElementById(name).style.display = "block";
+		} else {
+			hide_div(div);
+		}
+	});
 }
 
-function hide_loading() {
-	document.getElementById("loading").style.display = "none";
-}
-
-function hide_ready() {
-	document.getElementById("ready").style.display = "none";
-}
-
-function hide_intensifying() {
-	document.getElementById("intensifying").style.display = "none";
-}
-
-function show_error() {
-	document.getElementById("error").style.display = "block";
-	hide_loading();
-	hide_ready();
-	hide_intensifying();
-}
-
-function show_loading() {
-	hide_error();
-	document.getElementById("loading").style.display = "block";
-	hide_ready();
-	hide_intensifying();
-}
-
-function show_ready() {
-	hide_error();
-	hide_loading();
-	document.getElementById("ready").style.display = "block";
-	hide_intensifying();
-}
-
-function show_intensifying() {
-	hide_error();
-	hide_loading();
-	hide_ready();
-	document.getElementById("intensifying").style.display = "block";
-}
-
-function hide_all() {
-	hide_error();
-	hide_loading();
-	hide_ready();
-	hide_intensifying();
-}
+hide_div = (name) => document.getElementById(name).style.display = "none";
+hide_all = () => div_list.forEach((name) => hide_div(name));
