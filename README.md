@@ -8,7 +8,7 @@ For these times where a simple image isn't enough...
 
 #### TODO
 
-* [ ] Make less ugly
+* [x] Make less ugly
 * [x] Make the errors more obvious
 * [x] Allow changing the font size
 * [X] Figure out a way to get rid of the switch/case

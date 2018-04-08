@@ -24,7 +24,7 @@ function select_file(input) {
 		};
 		file_reader.readAsDataURL(files[0]);
 	} else {
-		show_only("msg_box_error");
+		show_error("&#x2620; Unable to get the image");
 	}
 }
 
@@ -47,13 +47,11 @@ function save_to_local_storage() {
 			};
 			fileReader.readAsDataURL(xhr.response);
 		} else {
-			console.error("Unable to load file");
-			show_only("msg_box_error");
+			show_error("&#x1F61F; Unable to load file");
 		}
 	});
 	xhr.addEventListener("error", function () {
-		console.error("Unable to load file");
-		show_only("msg_box_error");
+		show_error("&#x1F4A9; The server didn't serve us the file");
 	});
 	xhr.send();
 }
@@ -80,16 +78,15 @@ function intensify() {
 	target.onload = function() {
 		var img_width  = target.width;
 		var img_height = target.height;
-		if (document.getElementById("checkbox").checked) {
-			let max_width  = document.getElementById("max_x").value || 800;
-			let max_height = document.getElementById("max_y").value || 800;
-			if (img_width > max_width) {
-				ratio = max_width/img_width;
+		var max_size   = document.getElementById("max_image_size").value;
+		if (max_size) {
+			if (img_width > max_size) {
+				ratio = max_size/img_width;
 				img_width *= ratio;
 				img_height *= ratio;
 			}
-			if (img_height > max_height) {
-				ratio = max_height/img_height;
+			if (img_height > max_size) {
+				ratio = max_size/img_height;
 				img_width *= ratio;
 				img_height *= ratio;
 			}
@@ -100,22 +97,29 @@ function intensify() {
 		var options = {
 			img: imgCanvas,
 			ctx: canvas.getContext("2d"),
-			magnitude: document.getElementById("magnitude_range").value,
-			font_size: document.getElementById("font_range").value,
+			magnitude: document.getElementById("magnitude_range").valueAsNumber,
+			font_size: document.getElementById("font_range").valueAsNumber,
 			text: document.getElementById("text").value,
 			text_effect: document.getElementById("text-menu").value,
 			img_output: intense_gif
 		}
-		create_gif(options);
+		let ret = create_gif(options);
+		if (!ret.success) {
+			show_error(ret.msg);
+		}
 	};
 	target.src = localStorage.image;
 }
 
 function create_gif(options) {
 	var magnitude = options.magnitude || 5;
-	options.ctx.canvas.width = options.img.width - (magnitude * 2);
-	options.ctx.canvas.height = options.img.height - (magnitude * 2);
-	
+	let canvas_width = options.img.width - (magnitude * 2);
+	let canvas_height = options.img.height - (magnitude * 2);
+	if (canvas_width <= 1 || canvas_height <= 1) {
+		return {success: false, msg: "&#x1F52C; Image too small"};
+	}
+	options.ctx.canvas.width = canvas_width;
+	options.ctx.canvas.height = canvas_height;
 	var encoder = new GIFEncoder();
 	encoder.setRepeat(0);
 	encoder.setDelay(20);
@@ -130,7 +134,7 @@ function create_gif(options) {
 	var gif_data = {
 		source_file: options.img,
 		magnitude: magnitude,
-		text: options.text || "[intensity intensifies]",
+		text: options.text,
 		intensify_text: options.text_effect || "none",
 		image_x: [0, 2, 1, 0, 2],
 		image_y: [2, 2, 0, 1, 1],
@@ -154,6 +158,7 @@ function create_gif(options) {
 	options.img_output.height = options.ctx.canvas.height;
 	options.ctx.canvas.width = 0;
 	options.ctx.canvas.height = 0;
+	return {success: true};
 }
 
 function draw_gif_frame(ctx, gif_data, frame) {
@@ -198,4 +203,8 @@ function show_only(name) {
 	});
 }
 
+show_error = (msg) => {
+	document.getElementById("msg_box_error").innerHTML = msg;
+	show_only("msg_box_error");
+}
 hide_all = () => [...document.getElementsByClassName("msg_box")].forEach((e) => e.style.display = "none");

@@ -18,16 +18,16 @@
 		<h1>INTENSIFY!</h1>
 		<form>
 			<label for="url-input">from URL</label>
-			<input type="text" id="url-input">
+			<input type="url" id="url-input">
 			<button id="get_button" type="button" onclick="save_to_local_storage()">get</button>
 			<label for="file-input">or from file</label>
 			<input type="file" id="file-input" class="input-full" value="file" accept=".jpg, .jpeg, .png" onchange="select_file(this)">
 			<label for="text">text</label>
 			<input type="text" id="text" class="input-full" value="[INTENSITY INTENSIFIES]">
 			<label for="scale">scale down</label>
-			<input type="checkbox" id="checkbox" checked><input type="text" id="max_x" value="800"><input type="text" id="max_y" value="800">
+			<input type="number" id="max_image_size" placeholder="don't resize" min="60" value="800">
 			<label for="font-size">font size (<span id="font_slider_value"></span>px)</label>
-			<input type="range" min="10" max="70" value="30" class="input-full" id="font_range">
+			<input type="range" min="0" max="70" value="30" class="input-full" id="font_range">
 			<label for="text-menu">intensify text</label>
 			<select id="text-menu" class="input-full">
 				<option value="none" title="the text won't move">none</option>
@@ -41,7 +41,7 @@
 			<button id="intensify_button" type="button" onclick="intensify()">INTENSIFY!</button>
 		</form>
 		<div id="msg_boxes">
-			<div class="msg_box" id="msg_box_error" style="display: none">&#x1F622; Unable to load file</div>
+			<div class="msg_box" id="msg_box_error" style="display: none"></div>
 			<div class="msg_box" id="msg_box_loading" style="display: none">&#x231b; Loading...</div>
 			<div class="msg_box" id="msg_box_ready" style="display: none">&#x1F44D; Image loaded, ready for intensification!</div>
 			<div class="msg_box" id="msg_box_intensifying" style="display: none">&#x1F477; Intensifying...</div>
