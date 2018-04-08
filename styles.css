@@ -14,8 +14,9 @@ select {
 	grid-column: 2 / 4;
 }
 
-input[type=range] {
-	width: 272px;
+input[type=range],
+input[type=number]  {
+	width: 271px;
 }
 
 #url-input {
