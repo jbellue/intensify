@@ -74,35 +74,41 @@ function intensify() {
 		intense_gif.id = "intensity_image";
 		document.getElementById("center").appendChild(intense_gif);
 	}
-	var options = {
-		target: localStorage.image,
-		ctx: canvas.getContext("2d"),
-		magnitude: document.getElementById("magnitude_range").value,
-		font_size: document.getElementById("font_range").value,
-		text: document.getElementById("text").value,
-		text_effect: document.getElementById("text-menu").value,
-		img_output: intense_gif
-	}
-	load_local_storage(options);
-}
-
-function load_local_storage(options) {
-	loadImage(
-		options.target,
-		function (img) {
-			if (img.type === "error") {
-				console.error("Unable to load file");
-				show_only("msg_box_error");
-			} else {
-				options.img = img;
-				create_gif(options);
+	var imgCanvas = document.createElement("canvas");
+	var imgCtx = imgCanvas.getContext("2d");
+	var target = new Image();
+	target.onload = function() {
+		var img_width  = target.width;
+		var img_height = target.height;
+		if (document.getElementById("checkbox").checked) {
+			let max_width  = document.getElementById("max_x").value || 800;
+			let max_height = document.getElementById("max_y").value || 800;
+			if (img_width > max_width) {
+				ratio = max_width/img_width;
+				img_width *= ratio;
+				img_height *= ratio;
 			}
-		}, {
-			crossOrigin: true,
-			canvas: true,
-			maxWidth: 500
+			if (img_height > max_height) {
+				ratio = max_height/img_height;
+				img_width *= ratio;
+				img_height *= ratio;
+			}
 		}
-	);
+		imgCanvas.width = img_width;
+		imgCanvas.height = img_height;
+		imgCtx.drawImage(target, 0, 0, img_width, img_height);
+		var options = {
+			img: imgCanvas,
+			ctx: canvas.getContext("2d"),
+			magnitude: document.getElementById("magnitude_range").value,
+			font_size: document.getElementById("font_range").value,
+			text: document.getElementById("text").value,
+			text_effect: document.getElementById("text-menu").value,
+			img_output: intense_gif
+		}
+		create_gif(options);
+	};
+	target.src = localStorage.image;
 }
 
 function create_gif(options) {
@@ -155,7 +161,7 @@ function draw_gif_frame(ctx, gif_data, frame) {
 	var image_x = magnitude * gif_data.image_x[frame];
 	var image_y = magnitude * gif_data.image_y[frame];
 	ctx.drawImage(gif_data.source_file, image_x, image_y);
-	
+
 	var text_x = ctx.canvas.clientWidth / 2;
 	var text_y = ctx.canvas.clientHeight * 0.98;
 	switch (gif_data.intensify_text) {

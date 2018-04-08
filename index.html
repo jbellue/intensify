@@ -8,8 +8,6 @@
 	<script type="text/javascript" src="./js/NeuQuant.js"></script>
 	<script type="text/javascript" src="./js/GIFEncoder.js"></script>
 	<script type="text/javascript" src="./js/b64.js"></script>
-	<script type="text/javascript" src="./js/load-image.js"></script>
-	<script type="text/javascript" src="./js/load-image-scale.js"></script>
 	<script type="text/javascript" src="./js/intensify.js"></script>
 	<script type="text/javascript" src="./js/extras.js"></script>
 	<link rel="stylesheet" href="./styles.css">
@@ -23,13 +21,15 @@
 			<input type="text" id="url-input">
 			<button id="get_button" type="button" onclick="save_to_local_storage()">get</button>
 			<label for="file-input">or from file</label>
-			<input type="file" id="file-input" value="file" accept=".jpg, .jpeg, .png" onchange="select_file(this)">
+			<input type="file" id="file-input" class="input-full" value="file" accept=".jpg, .jpeg, .png" onchange="select_file(this)">
 			<label for="text">text</label>
-			<input type="text" id="text" value="[INTENSITY INTENSIFIES]">
+			<input type="text" id="text" class="input-full" value="[INTENSITY INTENSIFIES]">
+			<label for="scale">scale down</label>
+			<input type="checkbox" id="checkbox" checked><input type="text" id="max_x" value="800"><input type="text" id="max_y" value="800">
 			<label for="font-size">font size (<span id="font_slider_value"></span>px)</label>
-			<input type="range" min="10" max="70" value="30" class="slider" id="font_range">
+			<input type="range" min="10" max="70" value="30" class="input-full" id="font_range">
 			<label for="text-menu">intensify text</label>
-			<select id="text-menu">
+			<select id="text-menu" class="input-full">
 				<option value="none" title="the text won't move">none</option>
 				<option value="along" title="the text will shake along with the image">with the image</option>
 				<option value="shake" title="the text will shake independently from the image">shake</option>
@@ -37,7 +37,7 @@
 				<option value="pulse_move" title="the text will pulse and move with the image">pulse and move</option>
 			</select> 
 			<label for="range">INTENSITY (<span id="magnitude_slider_value"></span>)</label>
-			<input type="range" min="1" max="20" value="7" class="slider" id="magnitude_range">
+			<input type="range" min="1" max="20" value="7" class="input-full" " id="magnitude_range">
 			<button id="intensify_button" type="button" onclick="intensify()">INTENSIFY!</button>
 		</form>
 		<div id="msg_boxes">

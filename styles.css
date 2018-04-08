@@ -1,7 +1,7 @@
 form {
 	display: grid;
 	grid-gap: 5px;
-	grid-template-columns: 1fr 2fr 30px;
+	grid-template-columns: 115px 210px 30px 30px;
 }
 
 label {
@@ -9,24 +9,28 @@ label {
 	grid-column: 1;
 }
 
-input {
-	grid-column: 2 / 4;
+input[type=range] {
+	width: 276px;
+}
+
+.input-full {
+	grid-column: 2 / 5;
 }
 
 #url-input {
-	grid-column: 2;
+	grid-column: 2 / 4;
 	grid-row: 1;
 }
 
 #get_button {
-	grid-column: 3;
+	grid-column: 4;
 	grid-row: 1;
 	padding: 0px;
 }
 
 #intensify_button {
-	grid-column: 1 / 4;
-	grid-row: 7;
+	grid-column: 1 / 5;
+	grid-row: 8;
 	height: 35px;
 }
 
