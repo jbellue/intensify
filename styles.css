@@ -50,22 +50,22 @@ h1 {
 	margin: 5px 0px;
 }
 
-#error {
+#msg_box_error {
 	color: #D8000C;
 	background-color: #FFBABA;
 }
 
-#loading {
+#msg_box_loading {
 	color: #00529B;
 	background-color: #BDE5F8;
 }
 
-#ready {
+#msg_box_ready {
 	color: #4F8A10;
 	background-color: #DFF2BF;
 }
 
-#intensifying {
+#msg_box_intensifying {
 	color: #00529B;
 	background-color: #BDE5F8;
 }
